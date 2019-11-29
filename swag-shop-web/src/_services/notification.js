@@ -17,21 +17,19 @@ class NotificationService {
             var obj = obs[x];
             obj.callBack(data);
         }
-        console.log(obj);
     }
     removeObserver =(observer, notifName) => {
         var obs = observers[notifName];
-
         if(obs) {
             for(var x = 0; x< obs.length;x++) {
                 if(observer === obs[x].observer) {
+                    console.log(observer);
                     obs.splice(x,1);
                     observers[notifName] = obs;
                     break;
                 }
             }
         }
-        console.log(observers);
     }
 
     addObserver = (notifName, observer, callBack) => {
@@ -43,7 +41,6 @@ class NotificationService {
 
         let obj = {observer: observer, callBack: callBack};
         observers[notifName].push(obj);
-        console.log(observers);
     }
 }
 

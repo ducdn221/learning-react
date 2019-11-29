@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./wishlist.css";
-import DataService from '../services/data-service';
-import NotificationService, {NOTIF_WISHLIST_CHANGED} from '../services/notification';
+import DataService from '../_services/data-service';
+import NotificationService, {NOTIF_WISHLIST_CHANGED} from '../_services/notification';
 
 import ProductCondensed from '../product-condensed/product-condensed';
 
@@ -18,12 +18,10 @@ class WishList extends Component {
   }
 
   componentDidMount() {
-    console.log('a')
     ns.addObserver(NOTIF_WISHLIST_CHANGED,this, this.onWishListChanged);
   }
 
   componentWillUnmount() {
-    console.log('a')
     ns.removeObserver(this, NOTIF_WISHLIST_CHANGED);
   }
 

@@ -1,7 +1,11 @@
+require("rootpath")();
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+const jwt = require("_helpers/jwt");
+const errorHandler = require("_helpers/error-handler");
 var mongoose = require("mongoose");
+var cors = require('cors')
 var db = mongoose.connect("mongodb://localhost/swag-shop", {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -9,22 +13,29 @@ var db = mongoose.connect("mongodb://localhost/swag-shop", {
 
 var Product = require("./model/product");
 var WishList = require("./model/wishlist");
-app.use(function (req, res, next) {
-
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  // Pass to next layer of middleware
-  next();
-});
+app.use(cors())
+// app.use(function(req, res, next) {
+//   // Website you wish to allow to connect
+//   // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+//   );
+//   // Pass to next layer of middleware
+//   next();
+// });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(function (error, req, res, next) {
-//     if(error instanceof SyntaxError){ //Handle SyntaxError here.
-//       return res.status(500).send({data : "Invalid data"});
-//     } else {
-//       next();
-//     }
-//   });
+// use JWT auth to secure the api
+app.use(jwt());
+// api routes
+app.use("/users", require("./users/users.controller"));
+
+//global error handler
+app.use(errorHandler);
 
 app.post("/product", function(request, response) {
   var product = new Product();
