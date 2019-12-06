@@ -7,7 +7,6 @@ import { PrivateRoute } from "../_components";
 import { HomePage } from "../homepage/homepage";
 import { LoginPage } from "../loginpage/loginpage";
 import WishManager from "../wishmanager/wishmanager";
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -30,6 +29,7 @@ class App extends React.Component {
 
   render() {
     const { currentUser } = this.state;
+    console.log(process.env);
     return (
       <Router history={history}>
         <div>
@@ -37,7 +37,7 @@ class App extends React.Component {
             <nav className="navbar navbar-expand navbar-dark bg-dark">
               <div className="navbar-nav">
                 <Link to="/home" className="nav-item nav-link">
-                  Home
+                  Home{process.env.REACT_APP_ABC}
                 </Link>
                 <Link to="/wishmanager" className="nav-item nav-link">
                   Wish List
