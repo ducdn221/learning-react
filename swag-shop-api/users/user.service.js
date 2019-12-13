@@ -20,27 +20,28 @@ module.exports = {
 };
 
 async function authenticate({ username, password }) {
-  // let userTmp;
-  return  User.findOne({username: username, password: password}, function(err, user) {
+  let userTmp;
+  await  User.findOne({username: username, password: password}, function(err, user) {
     if (user) {
-      // userTmp = user._doc;
-      const token = jwt.sign({ sub: user._id }, config.secret);
-        const { password, ...userWithoutPassword } = user;
-        return {
-          ...userWithoutPassword,
-          token
-        };
+      userTmp = user._doc;
+      // const token = jwt.sign({ sub: userTmp._id }, config.secret);
+      //   const { password, ...userWithoutPassword } = userTmp;
+      //   console.log(token);
+      //   return {
+      //     ...userWithoutPassword,
+      //     token
+      //   };
       }
 
   })
-//   if (userTmp) {
-//   const token = jwt.sign({ sub: userTmp._id }, config.secret);
-//   const { password, ...userWithoutPassword } = userTmp;
-//   return {
-//     ...userWithoutPassword,
-//     token
-//   };
-// }
+  if (userTmp) {
+  const token = jwt.sign({ sub: userTmp._id }, config.secret);
+  const { password, ...userWithoutPassword } = userTmp;
+  return {
+    ...userWithoutPassword,
+    token
+  };
+}
   // const user = users.find(
   //   u => u.username === username && u.password === password
   // );

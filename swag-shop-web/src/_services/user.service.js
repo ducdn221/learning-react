@@ -8,5 +8,5 @@ export const userService = {
 function getAll() {
     const requestOptions = { method: 'GET' , headers: authHeader() };
     // ${config.apiUrl}
-    return fetch(`http://localhost:3004/users/getUsers`, requestOptions).then(handleResponse);
+    return fetch(`${process.env.REACT_APP_API_URL}/users/getUsers`, requestOptions).then(handleResponse);
 }

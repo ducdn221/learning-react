@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import { Router, Route, Link } from "react-router-dom";
+import { Router, Route, Link, Switch } from "react-router-dom";
 
 import { history } from "../_helpers";
 import { authenticationService } from "../_services";
 import { PrivateRoute } from "../_components";
 import { HomePage } from "../homepage/homepage";
 import { LoginPage } from "../loginpage/loginpage";
+import ProductPage from "../productpage/productpage";
 import WishManager from "../wishmanager/wishmanager";
+import Create from "../productpage/product-page-detail/create.component";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +31,6 @@ class App extends React.Component {
 
   render() {
     const { currentUser } = this.state;
-    console.log(process.env);
     return (
       <Router history={history}>
         <div>
@@ -41,6 +42,9 @@ class App extends React.Component {
                 </Link>
                 <Link to="/wishmanager" className="nav-item nav-link">
                   Wish List
+                </Link>
+                <Link to="/product" className="nav-item nav-link">
+                  Product List
                 </Link>
                 <a onClick={this.logout} className="nav-item nav-link">
                   Logout
@@ -57,8 +61,20 @@ class App extends React.Component {
                 </div>
               </div>
               <div className="row">
-              <PrivateRoute exact path="/wishmanager" component={WishManager} />
+                <PrivateRoute
+                  exact
+                  path="/wishmanager"
+                  component={WishManager}
+                />
               </div>
+              <div className="row">
+                <PrivateRoute exact path="/product" component={ProductPage} />
+              </div>
+
+              <Switch>
+                <Route exact path="/create" component={Create} />
+                {/* <Route path="/edit/:id" component={Edit} /> */}
+              </Switch>
             </div>
           </div>
         </div>

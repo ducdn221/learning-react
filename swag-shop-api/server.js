@@ -38,6 +38,7 @@ app.use("/users", require("./users/users.controller"));
 app.use(errorHandler);
 
 app.post("/product", function(request, response) {
+  console.log(request.body);
   var product = new Product();
   product.title = request.body.title;
   product.price = request.body.price;
@@ -46,6 +47,7 @@ app.post("/product", function(request, response) {
     if (err) {
       response.status(500).send({ error: "Could not save product" });
     } else {
+      console.log(savedProduct);
       response.send(savedProduct);
     }
   });
@@ -61,6 +63,14 @@ app.get("/product", function(request, response) {
     }
   });
 });
+
+app.get("/product/delete/:id" , function(request, response) {
+  console.log(request.params.id);
+  Product.findByIdAndRemove({_id: request.params.id}, function(err,product) {
+    if(err) response.status(500).send({ error: "Coult not remove product"})
+    else response.status(200).send('Successfully removed')
+  })
+})
 
 app.get("/wishlist", function(request, response) {
   //   WishList.find({}, function(err, wishList) {
