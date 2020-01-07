@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Router, Route, Link, Switch } from "react-router-dom";
 
 import { history } from "../_helpers";
@@ -9,6 +9,7 @@ import { LoginPage } from "../loginpage/loginpage";
 import ProductPage from "../productpage/productpage";
 import WishManager from "../wishmanager/wishmanager";
 import Create from "../productpage/product-page-detail/create.component";
+import Edit from "../productpage/product-page-detail/edit.component";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -73,7 +74,7 @@ class App extends React.Component {
 
               <Switch>
                 <Route exact path="/create" component={Create} />
-                {/* <Route path="/edit/:id" component={Edit} /> */}
+                <Route path="/edit/:id" component={Edit} />
               </Switch>
             </div>
           </div>

@@ -5,7 +5,7 @@ var bodyParser = require("body-parser");
 const jwt = require("_helpers/jwt");
 const errorHandler = require("_helpers/error-handler");
 var mongoose = require("mongoose");
-var cors = require('cors')
+var cors = require("cors");
 var db = mongoose.connect("mongodb://localhost/swag-shop", {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -13,22 +13,10 @@ var db = mongoose.connect("mongodb://localhost/swag-shop", {
 
 var Product = require("./model/product");
 var WishList = require("./model/wishlist");
-app.use(cors())
-// app.use(function(req, res, next) {
-//   // Website you wish to allow to connect
-//   // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader("Access-Control-Allow-Credentials", "true");
-//   res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
-//   );
-//   // Pass to next layer of middleware
-//   next();
-// });
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+mongoose.set("useFindAndModify", false);
 // use JWT auth to secure the api
 app.use(jwt());
 // api routes
@@ -38,7 +26,6 @@ app.use("/users", require("./users/users.controller"));
 app.use(errorHandler);
 
 app.post("/product", function(request, response) {
-  console.log(request.body);
   var product = new Product();
   product.title = request.body.title;
   product.price = request.body.price;
@@ -47,7 +34,6 @@ app.post("/product", function(request, response) {
     if (err) {
       response.status(500).send({ error: "Could not save product" });
     } else {
-      console.log(savedProduct);
       response.send(savedProduct);
     }
   });
@@ -64,13 +50,21 @@ app.get("/product", function(request, response) {
   });
 });
 
-app.get("/product/delete/:id" , function(request, response) {
-  console.log(request.params.id);
-  Product.findByIdAndRemove({_id: request.params.id}, function(err,product) {
-    if(err) response.status(500).send({ error: "Coult not remove product"})
-    else response.status(200).send('Successfully removed')
-  })
-})
+app.get("/product/delete/:id", function(request, response) {
+  Product.findByIdAndRemove({ _id: request.params.id }, function(err, product) {
+    if (err) response.status(500).send({ error: "Coult not remove product" });
+    else response.status(200).send({ message: "OK" });
+  });
+});
+
+app.get("/product/edit/:id", function(request, response) {
+  let id = request.params.id;
+  Product.findById(id, function(err, product) {
+    if (err) {
+      response.status(500).send({ error: "Could not find product" });
+    } else response.status(200).send(product);
+  });
+});
 
 app.get("/wishlist", function(request, response) {
   //   WishList.find({}, function(err, wishList) {

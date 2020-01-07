@@ -13,7 +13,8 @@ import { authHeader, handleResponse } from "../_helpers";
 export const productService = {
   getProducts,
   addProduct,
-  deleteProduct
+  deleteProduct,
+  getProductById
 };
 
 function getProducts() {
@@ -33,8 +34,15 @@ function addProduct(object) {
 }
 
 function deleteProduct(id) {
-  const requestOptions = {method: "GET", header: authHeader() };
+  const requestOptions = {method: "GET", headers: authHeader() };
   return fetch(`${process.env.REACT_APP_API_URL}/product/delete/` + id, requestOptions).then(
+    handleResponse
+  );
+}
+
+function getProductById(id) {
+  const requestOptions = {method: "GET" , headers: authHeader()};
+  return fetch(`${process.env.REACT_APP_API_URL}/product/edit/` + id, requestOptions).then(
     handleResponse
   );
 }

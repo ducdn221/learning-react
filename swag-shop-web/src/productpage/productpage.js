@@ -17,7 +17,9 @@ class ProductPage extends Component {
 
   deleteProduct(id) {
     productService.deleteProduct(id).then(info => {
-      console.log(info);
+      if(info.message === 'OK') {
+        this.loadData();
+      }
     })
   }
   render() {
@@ -38,7 +40,7 @@ class ProductPage extends Component {
           </thead>
           <tbody>
             {this.state.products.map(product => (
-              <tr>
+              <tr key={product._id}>
                 <td>
                   <img
                     alt="Product Img"
@@ -50,7 +52,7 @@ class ProductPage extends Component {
                 <td>{product.title}</td>
                 <td>${product.price}</td>
                 <td>
-                  <a className="btn btn-primary">Edit</a>{" "}
+                  <Link to={"/edit/"+product._id} className="btn btn-primary">Edit</Link>{" "}
                   {/* <Link to={"/edit/"+this.props.obj._id} className="btn btn-primary">Edit</Link> */}
                   <a className="btn btn-danger" onClick={this.deleteProduct.bind(this,product._id)}>Delete</a>
                 </td>
